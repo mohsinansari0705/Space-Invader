@@ -7,6 +7,7 @@ pg.init()
 # Create a screen
 dimentions = (800, 600) # Width & Height(X, Y axis)
 screen = pg.display.set_mode(dimentions)
+backgroundImg = pg.image.load("background.png") # Load the background image
 
 
 # Title & Icon
@@ -16,30 +17,44 @@ pg.display.set_icon(icon)
 
 # Player
 playerImg = pg.image.load("player.png")
-playerX = 368
+playerX = 368 # Initial coordinates of the spaceship
 playerY = 480
 playerX_change = 0
 playerY_change = 0
-
-# Player Function
-def player(x, y):
-    screen.blit(playerImg, (x, y))
 
 # Enemy
 enemyImg = pg.image.load("enemy.png")
 enemyX = random.randint(0, 736)
 enemyY = random.randint(0, 236)
-enemyX_change = 0
-enemyY_change = 0
+enemyX_change = 2.5
+enemyY_change = 32
 
-# Enemy Function
+# Bullet
+bulletImg = pg.image.load("bullet.png")
+bulletX = 0
+bulletY = playerY
+bulletY_change = 10
+bulletState = "ready"
+
+# Player randering Function
+def player(x, y):
+    screen.blit(playerImg, (x, y))
+    
+# Enemy randering Function
 def enemy(x, y):
     screen.blit(enemyImg, (x, y))
+
+# Bullet firing & randering Function
+def fire_bullet(x, y):
+    global bulletState
+    bulletState = "fire"
+    screen.blit(bulletImg, (x+24, y-5))
 
 # Game Loop
 running = True
 while running:
-    screen.fill((23, 23, 23))
+    screen.fill((23, 23, 23)) # Background color
+    screen.blit(backgroundImg, (0, 0)) # Background image
 
     # Checking for the Events in the game
     for event in pg.event.get():
@@ -49,16 +64,18 @@ while running:
         # Changing the player moment depending upon the key pressed
         if event.type == pg.KEYDOWN:
             if event.key==pg.K_LEFT or event.key==pg.K_a:
-                playerX_change = -0.3
+                playerX_change = -4
             if event.key==pg.K_RIGHT or event.key==pg.K_d:
-                playerX_change = 0.3
+                playerX_change = 4
             if event.key==pg.K_UP or event.key==pg.K_w:
-                playerY_change = -0.3
+                playerY_change = -4
             if event.key==pg.K_DOWN or event.key==pg.K_s:
-                playerY_change = 0.3
+                playerY_change = 4
             if event.key == pg.K_LCTRL:
                 playerX = 368
                 playerY = 480
+            if event.key == pg.K_SPACE:
+                fire_bullet(playerX, playerY)
 
         if event.type == pg.KEYUP:
             if event.key==pg.K_LEFT or event.key==pg.K_a or event.key==pg.K_RIGHT or event.key==pg.K_d:
@@ -83,6 +100,20 @@ while running:
     playerY += playerY_change
     player(playerX, playerY)
 
+    # Movement of the enemey
+    if enemyX <= 0:
+        enemyX_change = 2.5
+        enemyY += enemyY_change
+    elif enemyX >= 736:
+        enemyX_change = -2.5
+        enemyY += enemyY_change
+
+    enemyX += enemyX_change
     enemy(enemyX, enemyY)
+
+    # Bullet movement
+    if bulletState == "fire":
+        fire_bullet(playerX, bulletY)
+        bulletY -= bulletY_change
     
     pg.display.update()
