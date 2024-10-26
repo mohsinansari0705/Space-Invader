@@ -1,4 +1,5 @@
 import pygame as pg
+from pygame import mixer
 import random
 import math
 
@@ -9,6 +10,10 @@ pg.init()
 dimentions = (800, 600) # Width & Height(X, Y axis)
 screen = pg.display.set_mode(dimentions)
 backgroundImg = pg.image.load("background.png") # Load the background image
+
+# Background music
+mixer.music.load('background_music.wav')
+mixer.music.play(-1) # Plying the music (-1 for infinite play)
 
 
 # Title & Icon
@@ -105,6 +110,8 @@ while running:
                 playerX = 368
                 playerY = 480
             if event.key == pg.K_SPACE:
+                bullet_sound = mixer.Sound('firing_sound.wav')
+                bullet_sound.play() # play firing sound while firing the bullet
                 bulletX = playerX
                 bulletY = playerY
                 fire_bullet(bulletX, playerY)
@@ -150,6 +157,8 @@ while running:
         # Collision detection
         collision = isCollision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
+            explosion_sound = mixer.Sound('explosion_sound.wav')
+            explosion_sound.play()
             score_value += 1
             bulletX = playerX
             bulletY = playerY
