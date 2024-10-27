@@ -56,6 +56,14 @@ font = pg.font.Font('font_Consolas.ttf', 16)
 textX = 10 # Coordinates of the text on the screen
 textY = 10
 
+# Game over event
+gameover_font = pg.font.Font('font_Consolas.ttf', 256)
+
+# Function for stop the game (Game Over)
+def game_over():
+    gameover_text = font.render("GAME OVER", True, (38, 170, 38))
+    screen.blit(gameover_text, (200, 250))
+
 # Function for rendering the score on the screen
 def show_score(x, y):
     score = font.render("Score : "+str(score_value), True, (233, 233, 233))
@@ -144,6 +152,13 @@ while running:
 
     # Movement of the enemies
     for i in range(number_of_enemies):
+        # Game over
+        if enemyY[i] > 450:
+            for j in range(number_of_enemies):
+                enemyY[j] = 2000
+            game_over()
+            break
+
         if enemyX[i] <= 0:
             enemyX_change[i] = 2.5
             enemyY[i] += enemyY_change[i]
