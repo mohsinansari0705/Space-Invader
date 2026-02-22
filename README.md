@@ -36,8 +36,8 @@ Do you have what it takes to save Earth? Let's find out!
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/space-invader.git
-   cd space-invader
+   git clone https://github.com/mohsinansari0705/Space-Invader.git
+   cd Space-Invader
    ```
 
 2. Install dependencies (if any):
@@ -85,7 +85,7 @@ Contributions are welcome! Feel free to fork this repository and submit pull req
 
 ## 📄 **License**
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/mohsinansari0705/Space-Invader/blob/main/LICENSE) file for more information.
 
 ---
 
